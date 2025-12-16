@@ -1,6 +1,7 @@
 import { randomUUID } from 'node:crypto'
 import { Database } from './database.js'
 import { buildRoutePath } from './utils/build-route-path.js';
+import { validateTaskData } from './utils/validate-task-data.js'
 
 const database = new Database()
 
@@ -24,6 +25,14 @@ export const routes = [
     method: 'POST',
     path: buildRoutePath('/tasks'),
     handler: (req, res) => {
+      const validation = validateTaskData(req.body)
+
+      if (!validation.isValid) {
+        return res.writeHead(400).end(
+          JSON.stringify({ errors: validation.errors })
+        )
+      }
+
       const { title, description } = req.body
 
       const task = {
@@ -43,8 +52,17 @@ export const routes = [
   {
     method: 'PUT',
     path: buildRoutePath('/tasks/:id'),
-    handler: (req, res ) => {
+    handler: (req, res) => {
       const { id } = req.params
+
+      const validation = validateTaskData(req.body)
+
+      if (!validation.isValid) {
+        return res.writeHead(400).end(
+          JSON.stringify({ errors: validation.errors })
+        )
+      }
+
       const { title, description } = req.body
 
       const task = database.find('tasks', id)
@@ -93,7 +111,7 @@ export const routes = [
     handler: (req, res) => {
       const { id } = req.params
       const task = database.find('tasks', id)
-      
+
       if (!task) {
         return res.writeHead(404).end(
           JSON.stringify({ message: 'Task not found!' })
