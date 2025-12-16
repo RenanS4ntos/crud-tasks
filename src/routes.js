@@ -30,9 +30,9 @@ export const routes = [
         id: randomUUID(),
         title,
         description,
-        completed_at: null,
         created_at: new Date(),
-        updated_at: new Date()
+        completed_at: null,
+        updated_at: null
       }
 
       database.insert('tasks', task)
@@ -103,10 +103,5 @@ export const routes = [
       database.delete('tasks', id)
       return res.writeHead(204).end()
     }
-  },
-  // {
-  //   method: 'POST',
-  //   path: buildRoutePath('/tasks/import'),
-  //   handler: () => {}
-  // }
+  }
 ];

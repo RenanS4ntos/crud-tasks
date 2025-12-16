@@ -6,9 +6,13 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": ""
+    "dev": "node --watch ./src/server.js",
+    "import": "node ./src/script/import-csv.js"
   },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "csv-parse": "^6.1.0"
+  }
 }
